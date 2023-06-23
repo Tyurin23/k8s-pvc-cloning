@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: main-job
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "1"
+spec:
+  backoffLimit: 0
+  template:
+    metadata:
+      name: main-job
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: init
+          image: alpine/curl
+          command: 
+            - /bin/sh
+            - -c
+            - curl -o /home/load/100MB.bin https://speed.hetzner.de/100MB.bin
+          volumeMounts:
+            - name: pvc-load
+              mountPath: /home/load
+      volumes:
+        - name: pvc-load
+          persistentVolumeClaim:
+            claimName: csi-pvc
+

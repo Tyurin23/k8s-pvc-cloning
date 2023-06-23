@@ -1,0 +1,14 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc-clone
+spec:
+  dataSource:
+    name: csi-pvc
+    kind: PersistentVolumeClaim
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: csi-hostpath-sc
+  resources:
+    requests:
+      storage: 1Gi

@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-clone
+spec:
+  selector:
+    matchLabels:
+      app: nginx-clone
+  replicas: 1 
+  template:
+    metadata:
+      labels:
+        app: nginx-clone
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: pvc
+              mountPath: /home/main
+      volumes:
+        - name: pvc
+          persistentVolumeClaim:
+            claimName: pvc-clone
